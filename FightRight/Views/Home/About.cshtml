@@ -1,0 +1,43 @@
+﻿@{
+	ViewBag.Title = "About";
+}
+
+
+
+<body class="about_Bg">
+
+	<div class=" container-fluid px-4 text-center text-white" style="width:95%">
+		<h1 class="mt-4 text-white page_header">FIGHT RIGHT</h1>
+		<h3 class="mt-4 text-white page_message">ABOUT YOUR CURATORS</h3>
+
+		<div>
+			<hr />
+		</div>
+		<div class="card bg-black bg-opacity-25" style="padding:2rem;">
+			<br />
+			<p>
+				This website is brought to you by the Cincinnati State Technical and Community College Capstone Project.<br />
+			</p>
+
+			<h3>The Team:</h3>
+			<p>  Timothy Robbins - Joshua Simms - Stacey Jones - Tyler Phiffer  </p>
+
+			<br />
+			<div style="padding:2rem">
+				<h3>Behind the Scenes: </h3>
+				<p> - This project utilizes SQL for the storage and acquisition of data through an API and C# for the display.</p>
+				<p>- The mmav2 API called in the SQL file returns to a JSON format and put into the database through OPENJSON: https://developer.sportradar.com/docs/read/combat_sports/MMA_v2 </p>
+				<p>- Career stats aren't listed in the documentation so we had to import stats from every fight and compile them together to get overall career stats.</p>
+				<p>- The fighter prediction is a combination of weighted totals on the selected fighter's stats that gets weighed against eachother and then a victor is selected upon that analysis.</p>
+				<br />
+				<h3>F.A.Q.</h3>
+				<br />
+				<h3>Why not use machine learning? </h3>
+				<p>- Machine learning was in talks in the early development cycle but was ruled out as "out of the scope of this project" and our current iteration of comparison was deemed acceptable.</p>
+				<h3>Why are some of the fighter profiles empty?</h3>
+				<p>- When pulling down the per-fight stats to then compile to get career stats, we suspect older information, like the weight of a fighter that hasnt fought in four years, to be deemed irrelevant and was then removed by SportsRadar.</p>
+				<br />
+			</div>
+		</div>
+	</div>
+</body>

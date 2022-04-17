@@ -1,0 +1,262 @@
+﻿
+@model FightRight.Models.FighterChart
+
+@{
+	ViewBag.Title = "View Fighters";
+}
+
+
+
+<body class="fighterView_Bg">
+	<div class="container-fluid px-4 text-center" style="width: 95%;">
+		<h1 class="mt-4 text-white page_header">FIGHT RIGHT</h1>
+		<h3 class="mt-4 text-white page_message">CHOOSE YOUR FIGHTER</h3>
+
+		
+
+		@using (Html.BeginForm(FormMethod.Post))
+		{
+			<div class="card bg-black bg-opacity-25" style="width: 100%; margin: 4rem,0,4rem,0; ">
+
+
+				<div class="col-xl-12  row card-header align-content-center" style="width:100%; margin-left:0.5rem">
+
+					<div class="card-header-pills text-black shadow-lg shadow col bg-transparent align-content-center" style="margin-top: 2rem;">
+						@if (Model.fightersA != null)
+						{
+							var dropText = (Model.currentFighterNameA == "") ? "Select Fighter" : Model.currentFighterNameA;
+
+							@Html.DropDownList("fighterSelectA", new SelectList(Model.fightersA.Values), dropText, new { @id = "FighterSelectA", @class = "card-body bg-dark text-white dropdown-menu-xxl-start rounded", @height = "100%", @width = "100%", @onchange = @"form.submit();" })
+						}
+					</div>
+
+				</div>
+
+
+
+
+
+
+				<div class="col-xl-12  card-body" style="width:100%; margin-bottom:2rem;">
+
+					<div class="text-white row bg-transparent" style="margin-top:0.5rem;">
+						<div style="text-align:center">
+							<button class="button-action shadow-lg rounded-3 bg-dark btn-outline-light text-white" id="btnFighterClear" name="btnFighterClear" value="Submit">Clear</button>
+						</div>
+					</div>
+
+				</div>
+
+
+
+			</div>
+
+		}
+
+
+		@if (Model.currentSelectionA != 0)
+		{
+
+		if (Model.dcFighterA_profile != null)
+			{
+
+			<div class="card bg-black bg-opacity-25">
+
+				<div class="card-header bg-transparent col-xl-12 col-md-5 row" style="width: 100%; font-size: xx-large;">
+					<div class="text-white shadow-lg col rounded-2" style="text-align:center;">
+						<br />
+						<br />
+						@Model.currentFighterNameA
+					</div>
+					<hr />
+				</div>
+
+				<div class="card-body bg-transparent col-xl-12 col-md-5 row" style="width: 100%; font-size: x-large;">
+					<div class="text-white shadow-lg col rounded-2" style="text-align:center;">
+						<br />
+						<br />
+						@foreach (var fighter in Model.dcFighterA_profile)
+						{
+							if (fighter.valueString != "")
+							{
+								<div>
+									@fighter.Label @fighter.valueString
+								</div>
+							}
+							else
+							{
+								<div>
+									@fighter.Label ???
+								</div>
+							}
+						}
+					</div>
+					<hr />
+				</div>
+
+
+			</div>
+
+
+
+			<br />
+			<br />
+			}
+
+		if (Model.currentFighterNameA != null)
+		{
+
+
+			<div class="full-content">
+
+				<br />
+				<br />
+
+				<div class="col-xl-12 col-md-5 row bg-black bg-opacity-25 rounded-2" style="width: 100%; font-size: x-large; ">
+					<div class="card text-white shadow-lg col bg-transparent" style="text-align:center;">
+						<br />
+						<br />
+						<p>Totals</p>
+						<hr />
+					</div>
+					<div class="card text-white shadow-lg col bg-transparent" style="text-align:center;">
+						<br />
+						<br />
+						<p>Percentages</p>
+						<hr />
+					</div>
+				</div>
+
+				<div class="col-xl-12 col-md-5 row bg-black bg-opacity-25 rounded-2" style="width: 100%; font-size: x-large;">
+
+					<div class="card text-white shadow-lg col bg-transparent" style="text-align:center;">
+
+						@foreach (var fighter in Model.dcFighterA_total_stats)
+						{
+							if (fighter.valueString != "")
+							{
+								<div>
+									@fighter.Label @fighter.valueString
+								</div>
+							}
+							else
+							{
+								<div>
+									@fighter.Label ???
+								</div>
+							}
+						}
+
+
+						<br />
+						<br />
+
+					</div>
+
+					<div class="card text-white shadow-lg col bg-transparent" style="text-align:center;">
+
+						@foreach (var fighter in Model.dcFighterA_stats)
+						{
+							if (fighter.valueString != "")
+							{
+								<div>
+									@fighter.Label @fighter.valueString%
+								</div>
+							}
+
+						}
+
+
+						<br />
+						<br />
+
+					</div>
+
+
+				</div>
+
+
+
+			</div>
+
+
+			<div class="mobile-content">
+
+				<div class="col-xl-12 col-md-5 row" style="width: 100%; font-size: x-large;">
+					<div class="card text-white shadow-lg col bg-black bg-opacity-25 rounded-2" style="text-align:center;">
+						<br />
+						<br />
+						<p>Totals</p>
+						<hr />
+
+
+						@foreach (var fighter in Model.dcFighterA_total_stats)
+						{
+							if (fighter.valueString != "")
+							{
+								<div>
+									@fighter.Label @fighter.valueString
+								</div>
+							}
+							else
+							{
+								<div>
+									@fighter.Label ???
+								</div>
+							}
+						}
+
+						<br />
+						<br />
+					</div>
+
+				</div>
+
+				<br />
+				<br />
+
+				<div class="col-xl-12 col-md-5 row" style="width: 100%; font-size: x-large;">
+					<div class="card text-white shadow-lg col bg-black bg-opacity-25 rounded-2" style="text-align:center;">
+						<br />
+						<br />
+						<p>Percentages</p>
+						<hr />
+
+
+
+
+
+						@foreach (var fighter in Model.dcFighterA_stats)
+						{
+							if (fighter.valueString != "")
+							{
+								<div>
+									@fighter.Label @fighter.valueString%
+								</div>
+							}
+
+						}
+
+						<br />
+						<br />
+
+					</div>
+				</div>
+
+
+
+			</div>
+
+
+
+
+
+		}
+
+		}
+		<br />
+		<br />
+
+	</div>
+</body>
+

@@ -1,0 +1,66 @@
+﻿@using System.Data;
+@using System.Web.Optimization;
+
+
+@{
+	ViewBag.Title = "Home Page";
+}
+
+
+<style>
+
+	
+
+
+.word1, .word2, .word3 {
+	opacity:0;
+	font-family: tahoma;
+	
+	position:relative;
+	margin:0 !important;
+	padding:0;
+}
+
+	.word1 {
+		animation: open_right 1.5s ease-in-out forwards;
+	}
+	.word2 {
+		animation: open_right 1.75s ease-in-out forwards;
+		animation-delay: 1s;
+	}
+	.word3 {
+		animation: open_right 1.5s ease-in-out forwards;
+		animation-delay: 2.5s;
+	}
+
+
+</style>
+
+
+<body class="home_bg">
+
+	<div class=" container-fluid px-4 text-center" style="width:90%">
+		<h1 class="mt-4 text-white page_header">FIGHT RIGHT</h1>
+		<div class="page_message row full-content">
+			<p class="word1 col">FIND</p>
+			<p class="word2 col">YOUR</p>
+			<p class="word3 col">FIGHT</p>
+		</div>
+		
+		<div class="mobile-content">
+			<p class="page_message col">FIND YOUR FIGHT</p>
+		</div>
+
+		<div>
+			<hr />
+		</div>
+
+		<br />
+		<br />
+
+
+	</div>
+
+
+	
+</body>

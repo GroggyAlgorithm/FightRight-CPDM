@@ -1,0 +1,611 @@
+﻿
+@{
+	ViewBag.Title = "Fighter Comparison - Chart";
+}
+
+
+
+
+@model FightRight.Models.FighterChart
+
+
+@using (Html.BeginForm(FormMethod.Post))
+{
+
+	<br />
+	<br />
+	<br />
+
+	<div class="card bg-black bg-opacity-25 rounded-3" style="width: 100%; margin: 4rem,0,4rem,0; ">
+
+
+		<div class="col-xl-12 row card-header align-content-center" style="width:100%; margin-left:0.5rem">
+
+			<div class="card-header-pills text-black shadow-lg shadow col bg-transparent align-content-center" style="margin-top: 2rem;">
+				@if (Model.fightersA != null)
+				{
+					var dropText = (Model.currentFighterNameA == "") ? "Select Fighter" : Model.currentFighterNameA;
+
+					@Html.DropDownList("fighterSelectA", new SelectList(Model.fightersA.Values), dropText, new { @id = "FighterSelectA", @class = "card-body bg-dark text-white dropdown-menu-xxl-start rounded", @height = "100%", @width = "100%", @onchange = @"form.submit();" })
+				}
+			</div>
+
+		</div>
+
+		<div class="col-xl-12  row card-header align-content-center" style="width:100%; margin-left:0.5rem">
+
+			<div class="card-header-pills text-black shadow-lg shadow col bg-transparent align-content-center" style="margin-top: 2rem;">
+				@if (Model.fightersB != null)
+				{
+					var dropText = (Model.currentFighterNameB == "") ? "Select Fighter" : Model.currentFighterNameB;
+
+					@Html.DropDownList("fighterSelectB", new SelectList(Model.fightersB.Values), dropText, new { @id = "FighterSelectB", @class = "card-body bg-dark text-white dropdown-menu-xxl-start rounded", @height = "100%", @width = "100%", @onchange = @"form.submit();" })
+				}
+			</div>
+
+		</div>
+
+
+
+
+		<div class="col-xl-12  card-body" style="width:100%; margin-bottom:2rem;">
+
+
+
+			<div class="text-white row bg-transparent" style="margin-top:0.5rem;">
+				<div style="text-align:center">
+					<button class="button-action shadow-lg rounded-3 bg-dark btn-outline-light text-white" id="btnFighterClear" name="btnFighterClear" value="Submit">Clear</button>
+				</div>
+			</div>
+
+		</div>
+
+
+
+	</div>
+
+	<br />
+	<br />
+	<br />
+
+}
+
+@if (Model.currentSelectionA != 0 && Model.currentSelectionB != 0)
+{
+
+if (Model.dcPrediction != null)
+{
+	var aClassString = (Model.predictedID == Model.currentSelectionA) ? "winner_color" : "loser_color";
+	var bClassString = (Model.predictedID == Model.currentSelectionB) ? "winner_color" : "loser_color";
+
+	var currentLabel = "Certainty: ";
+	var aPercent = (float)Model.fighterACertainty;
+	var bPercent = (float)Model.fighterBCertainty;
+
+	var aWidth = ("width: " + aPercent.ToString() + "%");
+	var bWidth = ("width: " + bPercent.ToString() + "%");
+
+	<div class="card align-content-center bg-black bg-opacity-25 rounded-3" style="margin: 4rem,0,4rem,0; padding-left:0.5rem; padding-top:0.5rem; ">
+		<div class="bg-transparent text-white" style="margin-top: 0.5rem;">
+			<div class="card-header">
+				<div class="col-xl-12 col-md-5 row" style="width:100%;">
+					<br />
+					<br />
+					<div class="text-capitalize mt-4 text-white col" style="font-size:x-large; text-align:center;">
+
+						<p>Predicted Winner</p>
+
+					</div>
+				</div>
+
+
+
+
+			</div>
+
+			<div class="card-body" style="margin-bottom: 3rem;">
+
+				<div class="col-xl-12 col-md-5 row" style="width:100%; margin-bottom:0.25rem;">
+					<div class="text-capitalize mt-4 text-white col" style="font-size:xx-large; text-align:center;">
+
+						<p>@Model.predictedName</p>
+
+					</div>
+
+				</div>
+
+				<div class="col-xl-12 col-md-5 row" style="width:100%;">
+					<br />
+					<br />
+					<div class="text-capitalize text-left mt-4 col-2 full-content" style="font-size:large; text-align:left;">
+						@currentLabel
+					</div>
+					<div class="text-capitalize text-left mt-4 col-4 mobile-content" style="font-size: large; text-align: left;">
+						@currentLabel
+					</div>
+
+					<div class="progress bg-transparent mt-4 col" style="height: 2rem;">
+
+						<div class="@aClassString progress-bar  rounded-3" role="progressbar" style="margin-right: 0.25rem; border: 1px solid black; @aWidth">
+							<p style="margin-right: 1rem; margin-top:1rem; text-align:right;">
+								@Math.Round(aPercent, 0).ToString()%
+								<i class="fa-solid fa-caret-right fa-xl"></i>
+							</p>
+						</div>
+
+						<div class="@bClassString progress-bar  rounded-3" role="progressbar" style="margin-right: 0.25rem; border: 1px solid black; @bWidth">
+							<p style="margin-left: 1rem; margin-top: 1rem; text-align: left;">
+								<i class="fa-solid fa-caret-left fa-xl"></i>
+								@Math.Round(bPercent, 0).ToString()%
+							</p>
+						</div>
+					</div>
+				</div>
+
+				<br />
+				<br />
+			</div>
+		</div>
+	</div>
+}
+
+
+
+<br />
+<br />
+
+if (Model.dcFighterA_stats != null && Model.dcFighterB_stats != null)
+{
+
+<div class="card align-content-center bg-black bg-opacity-25 rounded-3" style="margin: 4rem,0,4rem,0; padding-left:0.5rem; padding-top:1rem; ">
+	@{ 
+		var statsLengthA = Model.dcFighterA_stats.Count;
+		var statsLengthB = Model.dcFighterB_stats.Count;
+
+
+		if (statsLengthA == statsLengthB)
+		{
+			<div class="row">
+				<p class="col text-capitalize text-white text-center align-content-center" style="font-size:x-large">
+					Percentages
+				</p>
+			</div>
+
+
+			for (int i = 0; i < statsLengthA; i++)
+			{
+
+
+				var aStats = Model.dcFighterA_stats.ElementAt(i);
+				var bStats = Model.dcFighterB_stats.ElementAt(i);
+				var maxVal = aStats.value + bStats.value;
+
+				var aClassString = (aStats.value > bStats.value) ? "winner_color" : (aStats.value < bStats.value) ? "loser_color" : "tie_color";
+				var bClassString = (aStats.value < bStats.value) ? "winner_color" : (aStats.value > bStats.value) ? "loser_color" : "tie_color";
+
+				float aPercent = 0;
+				float bPercent = 0;
+
+				if (maxVal != 0)
+				{
+					aPercent = (float)((aStats.value / maxVal) * 100);
+					bPercent = (float)((bStats.value / maxVal) * 100);
+				}
+				else
+				{
+					aPercent = 50;
+					bPercent = 50;
+				}
+
+				var aWidth = ("width: " + aPercent.ToString() + "%");
+				var bWidth = ("width: " + bPercent.ToString() + "%");
+
+				var currentLabel = aStats.Label.Trim();
+
+
+
+
+
+
+				if (i == statsLengthA - 1)
+				{
+
+					<div class="col-xl-12 col-md-5 row bg-transparent" style="width: 100%;">
+						<div class="text-capitalize text-left mt-4 text-white col-2 full-content" style="font-size:large; text-align:left; ">
+							@currentLabel
+						</div>
+						<div class="text-capitalize text-left mt-4 text-white col-4 mobile-content" style="font-size:large; text-align:left; ">
+							@currentLabel
+						</div>
+
+						<div class="progress bg-transparent mt-4 col" style="height: 2rem; margin-bottom:2rem">
+
+							<div class="@aClassString progress-bar rounded-3" role="progressbar" style="margin-right: 0.25rem; border: 1px solid black; @aWidth">
+								<p style="margin-right: 1rem; margin-top:1rem; text-align:right;">
+
+									@Math.Round(aPercent, 0).ToString()%
+									<i class="fa-solid fa-caret-right fa-xl"></i>
+								</p>
+							</div>
+
+							<div class="@bClassString progress-bar  rounded-3" role="progressbar" style="margin-right: 0.25rem; border: 1px solid black; @bWidth">
+								<p style="margin-left: 1rem; margin-top: 1rem; text-align: left;">
+									<i class="fa-solid fa-caret-left fa-xl"></i>
+									@Math.Round(bPercent, 0).ToString()%
+								</p>
+							</div>
+						</div>
+					</div>
+
+
+
+
+				}
+				else
+				{
+					<div class="col-xl-12 col-md-5 row bg-transparent" style="width:100%;">
+						<div class="text-capitalize text-left mt-4 text-white col-2 full-content" style="font-size:large; text-align:left;">
+							@currentLabel
+						</div>
+						<div class="text-capitalize text-left mt-4 text-white col-4 mobile-content" style="font-size:large; text-align:left;">
+							@currentLabel
+						</div>
+
+						<div class="progress bg-transparent mt-4 col" style="height: 2rem;">
+
+							<div class="@aClassString progress-bar  rounded-3" role="progressbar" style="margin-right: 0.25rem; border: 1px solid black; @aWidth">
+								<p style="margin-right: 1rem; margin-top:1rem; text-align:right;">
+
+									@Math.Round(aPercent, 0).ToString()%
+									<i class="fa-solid fa-caret-right fa-xl"></i>
+								</p>
+							</div>
+
+							<div class="@bClassString progress-bar  rounded-3" role="progressbar" style="margin-right: 0.25rem; border: 1px solid black; @bWidth">
+								<p style="margin-left: 1rem; margin-top: 1rem; text-align: left;">
+									<i class="fa-solid fa-caret-left fa-xl"></i>
+									@Math.Round(bPercent, 0).ToString()%
+								</p>
+							</div>
+						</div>
+					</div>
+
+
+
+
+				}
+
+
+
+
+
+			}
+
+
+
+
+
+
+
+		}
+
+		}
+
+
+
+
+
+</div>
+		}
+
+
+<br />
+<br />
+
+<div class="card align-content-center bg-black bg-opacity-25 rounded-3" style="margin: 4rem,0,4rem,0; padding-left:0.5rem; padding-top:1rem; ">
+
+	@if (Model.dcFighterA_total_stats != null && Model.dcFighterB_total_stats != null)
+	{
+		var totalStatsLengthA = Model.dcFighterA_total_stats.Count;
+		var totalStatsLengthB = Model.dcFighterB_total_stats.Count;
+
+		if (totalStatsLengthA != totalStatsLengthB) { totalStatsLengthA = 0; }
+		else
+		{
+			<div class="row">
+				<p class="col text-capitalize text-white text-center align-content-center" style="font-size:x-large">
+					Totals
+				</p>
+			</div>
+		}
+
+
+		for (int i = 0; i < totalStatsLengthA; i++)
+		{
+
+
+			var aStats = Model.dcFighterA_total_stats.ElementAt(i);
+			var bStats = Model.dcFighterB_total_stats.ElementAt(i);
+			var maxVal = aStats.value + bStats.value;
+
+			var aClassString = (aStats.value > bStats.value) ? "winner_color" : (aStats.value < bStats.value) ? "loser_color" : "tie_color";
+			var bClassString = (aStats.value < bStats.value) ? "winner_color" : (aStats.value > bStats.value) ? "loser_color" : "tie_color";
+
+			float aPercent = 0;
+			float bPercent = 0;
+
+			if (maxVal != 0)
+			{
+				aPercent = (float)((aStats.value / maxVal) * 100);
+				bPercent = (float)((bStats.value / maxVal) * 100);
+			}
+			else
+			{
+				aPercent = 50;
+				bPercent = 50;
+			}
+
+			var aWidth = ("width: " + aPercent.ToString() + "%");
+			var bWidth = ("width: " + bPercent.ToString() + "%");
+
+			var currentLabel = aStats.Label.Trim();
+
+
+
+
+
+
+			if (i == totalStatsLengthA - 1)
+			{
+
+				<div class="col-xl-12 col-md-5 row bg-transparent" style="width: 100%;">
+					<div class="text-capitalize text-left mt-4 text-white col-2 full-content" style="font-size:large; text-align:left; ">
+						@currentLabel
+					</div>
+					<div class="text-capitalize text-left mt-4 text-white col-4 mobile-content" style="font-size:large; text-align:left; ">
+						@currentLabel
+					</div>
+
+					<div class="progress bg-transparent mt-4 col" style="height: 2rem; margin-bottom:2rem">
+
+						<div class="@aClassString progress-bar rounded-3" role="progressbar" style="margin-right: 0.25rem; border: 1px solid black; @aWidth">
+							<p style="margin-right: 1rem; margin-top:1rem; text-align:right;">
+
+								@Model.dcFighterA_total_stats.ElementAt(i).valueString
+								<i class="fa-solid fa-caret-right fa-xl"></i>
+							</p>
+						</div>
+
+						<div class="@bClassString progress-bar  rounded-3" role="progressbar" style="margin-right: 0.25rem; border: 1px solid black; @bWidth">
+							<p style="margin-left: 1rem; margin-top: 1rem; text-align: left;">
+								<i class="fa-solid fa-caret-left fa-xl"></i>
+								@Model.dcFighterB_total_stats.ElementAt(i).valueString
+							</p>
+						</div>
+					</div>
+				</div>
+
+
+
+			}
+			else
+			{
+				<div class="col-xl-12 col-md-5 row bg-transparent" style="width:100%;">
+					<div class="text-capitalize text-left mt-4 text-white col-2 full-content" style="font-size:large; text-align:left;">
+						@currentLabel
+					</div>
+					<div class="text-capitalize text-left mt-4 text-white col-4 mobile-content" style="font-size:large; text-align:left;">
+						@currentLabel
+					</div>
+
+					<div class="progress bg-transparent mt-4 col" style="height: 2rem;">
+
+						<div class="@aClassString progress-bar  rounded-3" role="progressbar" style="margin-right: 0.25rem; border: 1px solid black; @aWidth">
+							<p style="margin-right: 1rem; margin-top:1rem; text-align:right;">
+
+								@Model.dcFighterA_total_stats.ElementAt(i).valueString
+								<i class="fa-solid fa-caret-right fa-xl"></i>
+							</p>
+						</div>
+
+						<div class="@bClassString progress-bar  rounded-3" role="progressbar" style="margin-right: 0.25rem; border: 1px solid black; @bWidth">
+							<p style="margin-left: 1rem; margin-top: 1rem; text-align: left;">
+								<i class="fa-solid fa-caret-left fa-xl"></i>
+								@Model.dcFighterB_total_stats.ElementAt(i).valueString
+							</p>
+						</div>
+					</div>
+				</div>
+
+
+
+
+			}
+
+
+
+
+
+		}
+	}
+
+</div>
+
+
+<br />
+<br />
+}
+
+@if (@Model.currentFighterNameA != "" || @Model.currentFighterNameB != "")
+{
+
+	<div class="full-content">
+
+		<br />
+		<br />
+
+		<div class="col-xl-12 col-md-5 row bg-transparent rounded-3" style="width: 100%; font-size: x-large; ">
+			<div class="card text-white shadow-lg col bg-transparent" style="text-align:center;">
+				<br />
+				<br />
+				@Model.currentFighterNameA
+				@*<hr />*@
+			</div>
+			<div class="card text-white shadow-lg col bg-transparent" style="text-align:center;">
+				<br />
+				<br />
+				@Model.currentFighterNameB
+				@*	<hr />*@
+			</div>
+			<hr class="text-white" />
+		</div>
+
+
+		<div class="col-xl-12 col-md-5 row bg-transparent rounded-3" style="width: 100%; font-size: x-large;">
+
+			<div class="card text-white shadow-lg col bg-transparent" style="text-align:center;">
+				@if (Model.dcFighterA_profile != null)
+				{
+					foreach (var fighter in Model.dcFighterA_profile)
+					{
+						if (fighter.valueString != "")
+						{
+							<div>
+								@fighter.Label @fighter.valueString
+							</div>
+						}
+						else
+						{
+							<div>
+								@fighter.Label ???
+							</div>
+						}
+					}
+				}
+
+				<br />
+				<br />
+
+			</div>
+
+			<div class="card text-white shadow-lg col bg-transparent " style="text-align:center;">
+				@if (Model.dcFighterB_profile != null)
+				{
+					foreach (var fighter in Model.dcFighterB_profile)
+					{
+						if (fighter.valueString != "")
+						{
+							<div>
+								@fighter.Label @fighter.valueString
+							</div>
+						}
+						else
+						{
+							<div>
+								@fighter.Label ???
+							</div>
+						}
+					}
+				}
+
+				<br />
+				<br />
+
+			</div>
+
+
+		</div>
+
+
+
+	</div>
+
+
+	<div class="mobile-content">
+
+		<div class="col-xl-12 col-md-5 row" style="width: 100%; font-size: x-large;">
+			<div class="card text-white shadow-lg col bg-black bg-opacity-25 rounded-3" style="text-align:center;">
+				<br />
+				<br />
+				@Model.currentFighterNameA
+				<hr />
+				@if (Model.dcFighterA_profile != null)
+				{
+					foreach (var fighter in Model.dcFighterA_profile)
+					{
+						if (fighter.valueString != "")
+						{
+							<div>
+								@fighter.Label @fighter.valueString
+							</div>
+						}
+						else
+						{
+							<div>
+								@fighter.Label ???
+							</div>
+						}
+					}
+				}
+				<br />
+				<br />
+			</div>
+
+		</div>
+
+		<br />
+		<br />
+
+		<div class="col-xl-12 col-md-5 row" style="width: 100%; font-size: x-large;">
+			<div class="card text-white shadow-lg col bg-black bg-opacity-25 rounded-3" style="text-align:center;">
+				<br />
+				<br />
+				@Model.currentFighterNameB
+				<hr />
+
+
+
+				@if (Model.dcFighterB_profile != null)
+				{
+					foreach (var fighter in Model.dcFighterB_profile)
+					{
+						if (fighter.valueString != "")
+						{
+							<div>
+								@fighter.Label @fighter.valueString
+							</div>
+						}
+						else
+						{
+							<div>
+								@fighter.Label ???
+							</div>
+						}
+					}
+				}
+				<br />
+				<br />
+
+			</div>
+		</div>
+
+
+
+	</div>
+
+}
+
+<br />
+<br />
+
+
+}
+
+
+
+
+
+
+
+
+
