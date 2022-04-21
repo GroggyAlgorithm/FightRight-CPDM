@@ -42,6 +42,8 @@ namespace FightRight.Models
 		public string currentFighterNameA = ""; //The name of the current fighter(for comparison fighter A)
 		public Dictionary<int, string> fightersA { get; private set; } //Fighters(A for comparisons)
 		public Dictionary<string, int> fightersByNameA { get; private set; } //Fighters by name(A for comparisons)
+
+
 		public List<DataChart> dcFighterA_stats = new List<DataChart>(); //Fighter comparison A list of datachart type that contains a label and value for an item
 		public List<DataChart> dcFighterA_profile = new List<DataChart>(); //Fighter comparison A list of datachart type that contains a label and value for an item
 		

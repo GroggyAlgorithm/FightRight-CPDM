@@ -7,14 +7,25 @@
 
 
 <body class="comparisons_Bg">
-		<div class="container-fluid px-4 text-center" style="width: 95%;">
-			<h1 class="mt-4 text-white page_header">FIGHT RIGHT</h1>
-			<h3 class="mt-4 text-white page_message">CHOOSE YOUR FIGHTERS</h3>
 
-			@Html.Partial("FighterChart")
+	<div class="container-fluid px-4 text-center" style="width: 95%;">
+		<h1 class="mt-4 text-white page_header">FIGHT RIGHT</h1>
+		<h3 class="mt-4 text-white page_message">CHOOSE YOUR FIGHTERS</h3>
 
-			<br />
-			<br />
+		<br />
+		<p class="text-white"> * for best results, choose two fighters in the same league/weight-class.</p>
 
-		</div>
+		<br />
+		@Html.Partial("FighterChart")
+
+		<br />
+		<br />
+
+
+
+
+
+	</div>
+
+
 </body>
