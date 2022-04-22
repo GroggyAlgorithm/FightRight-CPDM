@@ -138,7 +138,7 @@
 						</p>
 					</div>
 
-					<canvas class="" id="percentageChart" style="width:100%;"></canvas>
+					<canvas class="" id="percentageChart" style="width:90%;"></canvas>
 					<br />
 
 				
@@ -199,7 +199,20 @@
 							position: 'top',
 							fontColor: 'black',
 						},
-
+						tooltips: {
+							enabled: true,
+							mode: 'nearest',
+							callbacks: {
+								label: function (tooltipItem, data) {
+									//data.datasets[tooltipItem.datasetIndex].label //If we want to return the fighter name
+									return data.labels[tooltipItem.index] + ': ' + data['datasets'][0]['data'][tooltipItem['index']] + '%';
+								},
+								title: function (context, tooltipItem) {
+									//tooltipItem.labels[context[0].index] //If we want to return the type of data
+									return "";
+								},
+							}
+						},
 						elements: {
 							line: {
 								borderWidth: 3,

@@ -32,15 +32,6 @@ namespace FightRight.Controllers
                 return View(chart);
             }
 
-   //         if(form["btnSelectStats"] == "Submit")
-			//{
-   //             chart.showingTotals = false;
-   //         }
-   //         else if(form["btnSelectTotals"] == "Submit")
-			//{
-   //             chart.showingTotals = true;
-   //         }
-
             if (form["fighterSelectA"] != null && form["fighterSelectA"] != "")
             {
                 chart.currentFighterNameA = form["fighterSelectA"];

@@ -21,9 +21,9 @@
 </head>
 		
 
-
-
 <script>
+
+	
 
 	function progBars() {
 		var elements;
@@ -58,7 +58,7 @@
 	};
 
 
-
+	
 
 	window.setInterval(progBars, 300);
 </script>
@@ -222,11 +222,12 @@
 				<script>
 
 
+
 					Chart.defaults.global.fontSize = 1400;
 					Chart.defaults.global.borderColor = 'white';
 					Chart.defaults.global.scaleGridLineColor = 'white';
 					Chart.defaults.global.defaultFontColor = 'white';
-
+					
 
 					const ptx = document.getElementById('percentageChart');
 
@@ -265,12 +266,25 @@
 
 
 					var percentageOptions = {
-
+						responsive: true,
+						spanGaps: true,
 						legend: {
 							position: 'top',
 							fontColor: 'black',
 						},
-
+						tooltips: {
+							enabled: true,
+							callbacks: {
+								label: function (tooltipItem, data) {
+									//data.datasets[tooltipItem.datasetIndex].label //If we want to return the fighter name
+									return data.labels[tooltipItem.index] + ': ' + data['datasets'][0]['data'][tooltipItem['index']] + '%';
+								},
+								title: function (context, tooltipItem) {
+									//tooltipItem.labels[context[0].index] //If we want to return the type of data
+									return "";
+								},
+							}
+						},
 						elements: {
 							line: {
 								borderWidth: 3,
@@ -278,7 +292,7 @@
 							}
 						},
 						animation: {
-							animateRotate: false,
+							animateRotate: true,
 
 						},
 						plugins: {
@@ -336,7 +350,7 @@
 						float aPercent = 0;
 						float bPercent = 0;
 
-						if (maxVal != 0)
+						if (maxVal != 0 && aStats.value != bStats.value)
 						{
 							aPercent = (float)((aStats.value / maxVal) * 100);
 							bPercent = (float)((bStats.value / maxVal) * 100);
@@ -535,7 +549,20 @@
 							position: 'top',
 							fontColor: 'black',
 						},
-
+						tooltips: {
+							enabled: true,
+							mode: 'nearest',
+							callbacks: {
+								label: function (tooltipItem, data) {
+									//data.datasets[tooltipItem.datasetIndex].label //If we want to return the fighter name
+									return data.labels[tooltipItem.index] + ': ' + data['datasets'][0]['data'][tooltipItem['index']] + '%';
+								},
+								title: function (context, tooltipItem) {
+									//tooltipItem.labels[context[0].index] //If we want to return the type of data
+									return "";
+								},
+							}
+						},
 						elements: {
 							line: {
 								borderWidth: 3,
@@ -605,7 +632,7 @@
 				float aPercent = 0;
 				float bPercent = 0;
 
-				if (maxVal != 0)
+				if (maxVal != 0 && aStats.value != bStats.value)
 				{
 					aPercent = (float)((aStats.value / maxVal) * 100);
 					bPercent = (float)((bStats.value / maxVal) * 100);
