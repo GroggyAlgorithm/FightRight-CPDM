@@ -8,6 +8,21 @@
 
 @model FightRight.Models.FighterChart
 
+
+<head>
+
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+	<style src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.css"></style>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.js"></script>
+
+
+</head>
+		
+
+
+
 <script>
 
 	function progBars() {
@@ -195,6 +210,117 @@
 						</p>
 					</div>
 
+					<br />
+				<div class="row">
+					<p class="col text-capitalize text-white text-center align-content-center" style="font-size:medium">
+						* Click names to toggle fighter
+					</p>
+				</div>
+				<canvas class="" id="percentageChart" style="width:100%;"></canvas>
+				<br />
+
+				<script>
+
+
+					Chart.defaults.global.fontSize = 1400;
+					Chart.defaults.global.borderColor = 'white';
+					Chart.defaults.global.scaleGridLineColor = 'white';
+					Chart.defaults.global.defaultFontColor = 'white';
+
+
+					const ptx = document.getElementById('percentageChart');
+
+
+					var percentageChart = {
+						labels: ["Knockdowns", "Takedowns", "Significant Strikes", "Total Strikes"],
+
+
+						datasets: [{
+
+							label: "@Model.currentFighterNameA",
+							data: [0, 0, 0, 0],
+							fill: true,
+							backgroundColor: 'rgba(255, 99, 132, 0.5)',
+							borderColor: 'rgb(255, 99, 132)',
+							pointBackgroundColor: 'rgb(255, 99, 132)',
+							pointBorderColor: '#fff',
+							pointHoverBackgroundColor: '#fff',
+							pointHoverBorderColor: 'rgb(255, 99, 132)',
+							hoverOffset: 4
+						},
+						{
+							label: "@Model.currentFighterNameB",
+							data: [0, 0, 0, 0],
+							fill: true,
+							backgroundColor: 'rgba(54, 162, 235, 0.5)',
+							borderColor: 'rgb(54, 162, 235)',
+							pointBackgroundColor: 'rgb(54, 162, 235)',
+							pointBorderColor: '#fff',
+							pointHoverBackgroundColor: '#fff',
+							pointHoverBorderColor: 'rgb(54, 162, 235)',
+							hoverOffset: 4
+						}]
+					};
+
+
+
+					var percentageOptions = {
+
+						legend: {
+							position: 'top',
+							fontColor: 'black',
+						},
+
+						elements: {
+							line: {
+								borderWidth: 3,
+								//tension:1,
+							}
+						},
+						animation: {
+							animateRotate: false,
+
+						},
+						plugins: {
+							filler: {
+								propagate: true
+							}
+						},
+						scale: {
+							angleLines: {
+								display: true,
+								color: 'white'
+							},
+							gridLines: {
+								color: 'white'
+							},
+							pointLabels: {
+								display: true
+							},
+							ticks: {
+								display: false,
+
+							},
+
+						}
+
+
+					}
+
+
+
+					var percentageConfig = {
+						type: 'radar',
+						data: percentageChart,
+						options: percentageOptions
+					};
+
+
+
+					var percentageChart = new Chart(ptx, percentageConfig);
+
+				</script>
+
 
 					for (int i = 0; i < statsLengthA; i++)
 					{
@@ -227,7 +353,13 @@
 						var currentLabel = aStats.Label.Trim();
 
 
+						<script>
 
+							percentageChart.data.datasets[0].data[@i] = @aPercent; // Would update the first dataset's value of 'March' to be 50
+							percentageChart.data.datasets[1].data[@i] = @bPercent; // Would update the first dataset's value of 'March' to be 50
+							percentageChart.update(); // Calling update now animates the position of March from 90 to 50.
+
+						</script>
 
 
 
@@ -316,7 +448,7 @@
 			}
 
 
-
+		
 
 
 		</div>
@@ -341,15 +473,130 @@
 						Totals
 					</p>
 				</div>
+
+
+				<br />
+				<div class="row">
+					<p class="col text-capitalize text-white text-center align-content-center" style="font-size:medium">
+						* Click names to toggle fighter
+					</p>
+				</div>
+				<canvas class="" id="totalsChart" style="width:100%;"></canvas>
+				<br />
+
+				<script>
+
+
+					Chart.defaults.global.fontSize = 1400;
+					Chart.defaults.global.borderColor = 'white';
+					Chart.defaults.global.scaleGridLineColor = 'white';
+					Chart.defaults.global.defaultFontColor = 'white';
+
+
+					const ctx = document.getElementById('totalsChart');
+
+
+					var totalsChartData = {
+						labels: ["Knockdowns", "Submission Attempts", "Takedowns", "Takedowns Attempted", "Total Strikes", "Total Strikes Attempted", "Significant Strikes"],
+
+
+						datasets: [{
+
+							label: "@Model.currentFighterNameA",
+							data: [0, 0, 0, 0, 0, 0, 0],
+							fill: true,
+							backgroundColor: 'rgba(255, 99, 132, 0.5)',
+							borderColor: 'rgb(255, 99, 132)',
+							pointBackgroundColor: 'rgb(255, 99, 132)',
+							pointBorderColor: '#fff',
+							pointHoverBackgroundColor: '#fff',
+							pointHoverBorderColor: 'rgb(255, 99, 132)',
+							hoverOffset: 4
+						},
+						{
+							label: "@Model.currentFighterNameB",
+							data: [0, 0, 0, 0, 0, 0, 0],
+							fill: true,
+							backgroundColor: 'rgba(54, 162, 235, 0.5)',
+							borderColor: 'rgb(54, 162, 235)',
+							pointBackgroundColor: 'rgb(54, 162, 235)',
+							pointBorderColor: '#fff',
+							pointHoverBackgroundColor: '#fff',
+							pointHoverBorderColor: 'rgb(54, 162, 235)',
+							hoverOffset: 4
+						}]
+					};
+
+
+
+					var totalsOptions = {
+
+						legend: {
+							position: 'top',
+							fontColor: 'black',
+						},
+
+						elements: {
+							line: {
+								borderWidth: 3,
+								//tension:1,
+							}
+						},
+						animation: {
+							animateRotate: false,
+
+						},
+						plugins: {
+							filler: {
+								propagate: true
+							}
+						},
+						scale: {
+							angleLines: {
+								display: true,
+								color: 'white'
+							},
+							gridLines: {
+								color: 'white'
+							},
+							pointLabels: {
+								display: true
+							},
+							ticks: {
+								display: false,
+
+							},
+
+						}
+
+
+					}
+
+
+
+					var totalsConfig = {
+						type: 'radar',
+						data: totalsChartData,
+						options: totalsOptions
+					};
+
+
+
+					var totalChart = new Chart(ctx, totalsConfig);
+
+				</script>
+
+
 			}
 
 
 			for (int i = 0; i < totalStatsLengthA; i++)
 			{
 
-
 				var aStats = Model.dcFighterA_total_stats.ElementAt(i);
 				var bStats = Model.dcFighterB_total_stats.ElementAt(i);
+
+
 				var maxVal = aStats.value + bStats.value;
 
 				var aClassString = (aStats.value > bStats.value) ? "winner_color" : (aStats.value < bStats.value) ? "loser_color" : "tie_color";
@@ -375,7 +622,13 @@
 				var currentLabel = aStats.Label.Trim();
 
 
+				<script>
 
+					totalChart.data.datasets[0].data[@i] = @aPercent; // Would update the first dataset's value of 'March' to be 50
+					totalChart.data.datasets[1].data[@i] = @bPercent; // Would update the first dataset's value of 'March' to be 50
+					totalChart.update(); // Calling update now animates the position of March from 90 to 50.
+
+				</script>
 
 
 
@@ -452,6 +705,42 @@
 
 			}
 		}
+
+		@*<canvas class="" id="birdsCanvas" style="width:100%;"></canvas>*@
+		@*const birdsCanvas = document.getElementById('birdsCanvas');
+
+		var birdsData = {
+				labels: ["Spring", "Summer", "Fall", "Winter"],
+				datasets: [{
+					data: [1200, 1700, 800, 200],
+					backgroundColor: [
+						"rgba(255, 0, 0, 0.6)",
+						"rgba(0, 255,200, 0.6)",
+						"rgba(200, 0, 200, 0.6)",
+						"rgba(0, 255, 0, 0.6)"
+					],
+					borderColor: "rgba(0, 0, 0, 0.8)"
+				}]
+			};
+
+			var chartOptions = {
+				startAngle: -Math.PI / 4,
+				legend: {
+					position: 'left'
+				},
+				animation: {
+					animateRotate: false
+				}
+			};
+
+			var polarAreaChart = new Chart(birdsCanvas, {
+				type: 'polarArea',
+				data: birdsData,
+				options: chartOptions
+			});
+
+		*@
+
 
 	</div>
 

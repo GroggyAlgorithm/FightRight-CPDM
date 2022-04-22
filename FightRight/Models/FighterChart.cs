@@ -214,6 +214,9 @@ namespace FightRight.Models
 		}
 
 
+		
+
+
 
 		/// <summary>
 		/// Creates a totals stats data chart list from the id of a fighter

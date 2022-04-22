@@ -5,14 +5,29 @@
 	ViewBag.Title = "View Fighters";
 }
 
+<head>
 
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+	<style src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.css"></style>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.js"></script>
+
+
+</head>
 
 <body class="fighterView_Bg">
+
+
+
 	<div class="container-fluid px-4 text-center" style="width: 95%;">
 		<h1 class="mt-4 text-white page_header">FIGHT RIGHT</h1>
 		<h3 class="mt-4 text-white page_message">CHOOSE YOUR FIGHTER</h3>
 
-		
+
+
+		<br />
+		<br />
 
 		@using (Html.BeginForm(FormMethod.Post))
 		{
@@ -54,209 +69,393 @@
 		}
 
 
+
+		<br />
+		<br />
+
 		@if (Model.currentSelectionA != 0)
 		{
 
-		if (Model.dcFighterA_profile != null)
+			if (Model.dcFighterA_profile != null)
 			{
 
-			<div class="card bg-black bg-opacity-25">
+				<div class="card bg-black bg-opacity-25">
 
-				<div class="card-header bg-transparent col-xl-12 col-md-5 row" style="width: 100%; font-size: xx-large;">
-					<div class="text-white shadow-lg col rounded-2" style="text-align:center;">
-						<br />
-						<br />
-						@Model.currentFighterNameA
+					<div class="card-header bg-transparent col-xl-12 col-md-5 row" style="width: 100%; font-size: xx-large;">
+						<div class="text-white shadow-lg col rounded-2" style="text-align:center;">
+							<br />
+							<br />
+							@Model.currentFighterNameA
+						</div>
+						<hr />
 					</div>
-					<hr />
+
+					<div class="card-body bg-transparent col-xl-12 col-md-5 row" style="width: 100%; font-size: x-large;">
+						<div class="text-white shadow-lg col rounded-2" style="text-align:center;">
+							<br />
+							<br />
+							@foreach (var fighter in Model.dcFighterA_profile)
+							{
+								if (fighter.valueString != "")
+								{
+									<div>
+										@fighter.Label @fighter.valueString
+									</div>
+								}
+								else
+								{
+									<div>
+										@fighter.Label ???
+									</div>
+								}
+							}
+						</div>
+						<hr />
+					</div>
+
+
 				</div>
 
-				<div class="card-body bg-transparent col-xl-12 col-md-5 row" style="width: 100%; font-size: x-large;">
-					<div class="text-white shadow-lg col rounded-2" style="text-align:center;">
-						<br />
-						<br />
-						@foreach (var fighter in Model.dcFighterA_profile)
-						{
-							if (fighter.valueString != "")
-							{
-								<div>
-									@fighter.Label @fighter.valueString
-								</div>
-							}
-							else
-							{
-								<div>
-									@fighter.Label ???
-								</div>
-							}
-						}
-					</div>
-					<hr />
-				</div>
 
 
-			</div>
-
-
-
-			<br />
-			<br />
+				<br />
+				<br />
 			}
 
-		if (Model.currentFighterNameA != null)
-		{
 
 
-			<div class="full-content">
+			if (Model.currentFighterNameA != null)
+			{
 
-				<br />
-				<br />
+				var statsLengthA = Model.dcFighterA_stats.Count;
 
-				<div class="col-xl-12 col-md-5 row bg-black bg-opacity-25 rounded-2" style="width: 100%; font-size: x-large; ">
-					<div class="card text-white shadow-lg col bg-transparent" style="text-align:center;">
-						<br />
-						<br />
-						<p>Totals</p>
-						<hr />
+
+
+				<div class="card align-content-center bg-black bg-opacity-25 rounded-3" style="margin: 4rem,0,4rem,0; padding-left:0.5rem; padding-top:1rem; " id="fighterPercentagesCard">
+					<div class="row">
+						<p class="col text-capitalize text-white text-center align-content-center" style="font-size:x-large">
+							Percentages
+						</p>
 					</div>
-					<div class="card text-white shadow-lg col bg-transparent" style="text-align:center;">
-						<br />
-						<br />
-						<p>Percentages</p>
-						<hr />
-					</div>
-				</div>
 
-				<div class="col-xl-12 col-md-5 row bg-black bg-opacity-25 rounded-2" style="width: 100%; font-size: x-large;">
+					<canvas class="" id="percentageChart" style="width:100%;"></canvas>
+					<br />
 
-					<div class="card text-white shadow-lg col bg-transparent" style="text-align:center;">
+				
 
-						@foreach (var fighter in Model.dcFighterA_total_stats)
-						{
-							if (fighter.valueString != "")
-							{
-								<div>
-									@fighter.Label @fighter.valueString
-								</div>
+
+					<script>
+
+
+					Chart.defaults.global.fontSize = 1400;
+					Chart.defaults.global.borderColor = 'white';
+					Chart.defaults.global.scaleGridLineColor = 'white';
+					Chart.defaults.global.defaultFontColor = 'white';
+
+
+					const ptx = document.getElementById('percentageChart');
+
+
+					var percentageChart = {
+						labels: ["Knockdowns", "Takedowns", "Significant Strikes", "Total Strikes"],
+
+
+						datasets: [{
+
+							label: "@Model.currentFighterNameA",
+
+							data: [0, 0, 0, 0],
+							fill: true,
+							backgroundColor: [
+								'rgba(8, 1, 255, 0.5)',
+								'rgba(255, 99, 132, 0.5)',
+								'rgba(142, 8, 132, 0.5)',
+								'rgba(3, 240, 100, 0.5)',
+							],
+							borderColor: [
+								'rgba(8, 1, 255, 0.5)',
+								'rgba(255, 99, 132, 1)',
+								'rgba(142, 8, 132, 0.5)',
+								'rgba(3, 240, 100, 0.5)',
+							],
+							pointBackgroundColor: [
+								'rgba(8, 1, 255, 0.5)',
+								'rgba(255, 99, 132, 1)',
+								'rgba(142, 8, 132, 0.5)',
+								'rgba(3, 240, 100, 0.5)',
+							],
+							pointBorderColor: '#fff',
+							pointHoverBackgroundColor: '#fff',
+							pointHoverBorderColor: 'rgb(255, 99, 132)',
+							hoverOffset: 4
+						}]
+					};
+
+
+
+					var percentageOptions = {
+
+						legend: {
+							position: 'top',
+							fontColor: 'black',
+						},
+
+						elements: {
+							line: {
+								borderWidth: 3,
+								//tension:1,
 							}
-							else
-							{
-								<div>
-									@fighter.Label ???
-								</div>
+						},
+						animation: {
+							animateRotate: false,
+
+						},
+						plugins: {
+							filler: {
+								propagate: true
 							}
+						},
+						scale: {
+							angleLines: {
+								display: true,
+								color: 'white'
+							},
+							gridLines: {
+								color: 'white'
+							},
+							pointLabels: {
+								display: true
+							},
+							ticks: {
+								display: false,
+
+							},
+
 						}
 
 
-						<br />
-						<br />
+					}
 
-					</div>
 
-					<div class="card text-white shadow-lg col bg-transparent" style="text-align:center;">
 
-						@foreach (var fighter in Model.dcFighterA_stats)
+					var percentageConfig = {
+						type: 'polarArea',
+						data: percentageChart,
+						options: percentageOptions
+					};
+
+
+
+					var percentageChart = new Chart(ptx, percentageConfig);
+
+					</script>
+
+
+				<div class="text-white" style="font-size: x-large; width: 100%; text-align: center;">
+					@for (int i = 0; i < statsLengthA; i++)
+					{
+						var aStats = Model.dcFighterA_stats.ElementAt(i);
+
+
+						<script>
+
+							percentageChart.data.datasets[0].data[@i] = @aStats.value; // Would update the first dataset's value of 'March' to be 50
+							percentageChart.update(); // Calling update now animates the position of March from 90 to 50.
+
+						</script>
+
+
+						if (aStats.valueString != "")
 						{
-							if (fighter.valueString != "")
-							{
-								<div>
-									@fighter.Label @fighter.valueString%
-								</div>
-							}
-
+							<div>
+								@aStats.Label @aStats.valueString%
+							</div>
 						}
-
-
-						<br />
-						<br />
-
-					</div>
-
-
+						else
+						{
+							<div>
+								@aStats.Label ???
+							</div>
+						}
+					}
 				</div>
 
-
-
+					
 			</div>
 
 
-			<div class="mobile-content">
+			<br />
 
-				<div class="col-xl-12 col-md-5 row" style="width: 100%; font-size: x-large;">
-					<div class="card text-white shadow-lg col bg-black bg-opacity-25 rounded-2" style="text-align:center;">
-						<br />
-						<br />
-						<p>Totals</p>
-						<hr />
+				var totalsLengthA = Model.dcFighterA_total_stats.Count;
 
-
-						@foreach (var fighter in Model.dcFighterA_total_stats)
-						{
-							if (fighter.valueString != "")
-							{
-								<div>
-									@fighter.Label @fighter.valueString
-								</div>
-							}
-							else
-							{
-								<div>
-									@fighter.Label ???
-								</div>
-							}
-						}
-
-						<br />
-						<br />
+				<div class="card align-content-center bg-black bg-opacity-25 rounded-3" style="margin: 4rem,0,4rem,0; padding-left:0.5rem; padding-top:1rem; " id="fighterPercentagesCard">
+					<div class="row">
+						<p class="col text-capitalize text-white text-center align-content-center" style="font-size:x-large">
+							Totals
+						</p>
 					</div>
 
-				</div>
+					<canvas class="" id="totalsChart" style="width:100%;"></canvas>
+					<br />
 
-				<br />
-				<br />
-
-				<div class="col-xl-12 col-md-5 row" style="width: 100%; font-size: x-large;">
-					<div class="card text-white shadow-lg col bg-black bg-opacity-25 rounded-2" style="text-align:center;">
-						<br />
-						<br />
-						<p>Percentages</p>
-						<hr />
+				
 
 
+					<script>
+
+
+					Chart.defaults.global.fontSize = 1400;
+					Chart.defaults.global.borderColor = 'white';
+					Chart.defaults.global.scaleGridLineColor = 'white';
+					Chart.defaults.global.defaultFontColor = 'white';
+
+
+					const ctx = document.getElementById('totalsChart');
+
+
+					var totalsChartData = {
+						labels: ["Knockdowns", "Takedowns", "Total Strikes", "Significant Strikes"],
+
+
+						datasets: [{
+
+							label: "@Model.currentFighterNameA",
+							
+							data: [0, 0, 0, 0],
+							fill: true,
+							backgroundColor: [
+								'rgba(8, 1, 255, 0.5)',
+								'rgba(255, 99, 132, 0.5)',
+								'rgba(142, 8, 132, 0.5)',
+								'rgba(3, 240, 100, 0.5)',
+							],
+							borderColor: [
+								'rgba(8, 1, 255, 0.5)',
+								'rgba(255, 99, 132, 1)',
+								'rgba(142, 8, 132, 0.5)',
+								'rgba(3, 240, 100, 0.5)',
+							],
+							pointBackgroundColor: [
+								'rgba(8, 1, 255, 0.5)',
+								'rgba(255, 99, 132, 1)',
+								'rgba(142, 8, 132, 0.5)',
+								'rgba(3, 240, 100, 0.5)',
+							],
+							pointBorderColor: '#fff',
+							pointHoverBackgroundColor: '#fff',
+							pointHoverBorderColor: 'rgb(255, 99, 132)',
+							hoverOffset: 4
+						}]
+					};
 
 
 
-						@foreach (var fighter in Model.dcFighterA_stats)
-						{
-							if (fighter.valueString != "")
-							{
-								<div>
-									@fighter.Label @fighter.valueString%
-								</div>
+					var totalsOptions = {
+
+						legend: {
+							position: 'top',
+							fontColor: 'black',
+						},
+
+						elements: {
+							line: {
+								borderWidth: 3,
+								//tension:1,
 							}
+						},
+						animation: {
+							animateRotate: false,
+
+						},
+						plugins: {
+							filler: {
+								propagate: true
+							}
+						},
+						scale: {
+							angleLines: {
+								display: true,
+								color: 'white'
+							},
+							gridLines: {
+								color: 'white'
+							},
+							pointLabels: {
+								display: true
+							},
+							ticks: {
+								display: false,
+								suggestedMax: 75,
+
+
+							},
 
 						}
 
-						<br />
-						<br />
 
-					</div>
+					}
+
+
+
+					var totalsConfig = {
+						type: 'polarArea',
+						data: totalsChartData,
+						options: totalsOptions
+					};
+
+
+
+					var totalChart = new Chart(ctx, totalsConfig);
+
+					</script>
+
+
+				<div class="text-white" style="font-size: x-large; width: 100%; text-align: center;">
+					
+					@for (int i = 0, j = 0; i < totalsLengthA; i++)
+					{
+						var aStats = Model.dcFighterA_total_stats.ElementAt(i);
+
+
+
+						if (aStats.Label.Contains("Attemp") == false)
+						{
+
+							<script>
+
+								totalChart.data.datasets[0].data[@j] = @aStats.value; // Would update the first dataset's value of 'March' to be 50
+								totalChart.update(); // Calling update now animates the position of March from 90 to 50.
+							</script>
+
+							j++;
+						}
+
+						if (aStats.valueString != "")
+						{
+							<div>
+								@aStats.Label @aStats.valueString
+							</div>
+						}
+						else
+						{
+							<div>
+								@aStats.Label ???
+							</div>
+						}
+					}
 				</div>
 
-
-
+					
 			</div>
 
 
-
-
-
+			}
 		}
-
-		}
-		<br />
-		<br />
 
 	</div>
+
+	<br />
+	<br />
+	<br />
 </body>
 

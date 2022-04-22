@@ -65,6 +65,42 @@ namespace FightRight.Models
         public static FighterChart fighterInfo = new FighterChart();
 
 
+
+        /// <summary>
+        /// Creates a dict of the fighters stats and profile
+        /// </summary>
+        /// <param name="fighterID"></param>
+        /// <returns></returns>
+        public static Dictionary<string, string> CreateFighterSuperChart(int fighterID)
+        {
+            Dictionary<string, string> chart = new Dictionary<string, string>();
+            DataRow fighterStats = GetFighterStats(fighterID);
+            DataRow fighterProfile = GetFighterProfile(fighterID);
+            if (fighterStats != null)
+            {
+                chart.Add("Knockdowns", fighterStats["Knockdowns"].ToString());
+                chart.Add("Submission_Attempts", fighterStats["Submission_Attempts"].ToString());
+                chart.Add("Takedowns", fighterStats["Takedowns"].ToString());
+                chart.Add("Takedowns_Attempted", fighterStats["Takedowns_Attempted"].ToString());
+                chart.Add("Total_Strikes", fighterStats["Total_Strikes"].ToString());
+                chart.Add("Significant_Strikes", fighterStats["Significant_Strikes"].ToString());
+
+                chart.Add("Takedowns_Percentage", fighterStats["Takedown_Percentage"].ToString());
+                chart.Add("Total_Strikes_Percentage", fighterStats["Total_strike_Percentage"].ToString());
+                chart.Add("Total_Strikes_Attempted", fighterStats["Total_Strikes_Attempted"].ToString());
+                chart.Add("Significant_Strikes_Percentage", fighterStats["Significant_Strike_Percentage"].ToString());
+
+                chart.Add("Reach", fighterProfile["reach"].ToString());
+                chart.Add("Height", fighterProfile["height"].ToString());
+                chart.Add("Wins", fighterProfile["wins"].ToString());
+                chart.Add("Losses", fighterProfile["losses"].ToString());
+                chart.Add("Draws", fighterProfile["draws"].ToString());
+            }
+
+            return chart;
+        }
+
+
         /// <summary>
         /// Helper for creating an sql statement for when searching for fighter ID's within a range
         /// </summary>
